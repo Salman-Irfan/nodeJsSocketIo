@@ -24,7 +24,10 @@ app.get('/custom-namespace', function (req, res) {
 // Count of total users
 let users = 0;
 
-
+// v6 starts - rooms / channels
+let roomno = 1;
+let full = 0;
+// v6 ends - rooms / channels
 
 // Connection established
 io.on('connection', function (socket) {
@@ -32,6 +35,18 @@ io.on('connection', function (socket) {
     // Incrementing the user count
     users++;
 
+    // v6 starts - rooms / channels
+    socket.join(`room-${roomno}`)
+    io.sockets.in(`room-${roomno}`).emit('connectedRoom', `You are connected to room no ${roomno}`);
+    // when a user enters in a room => full++
+    full++
+    // reuirement is in each roomno,, only 2 users can join in a room
+    // so if full>= 2, turn full into 0, and increment in room number
+    if(full>=2){
+        full=0
+        roomno++;
+    }
+    // v6 ends - rooms / channels
     // Show a welcome message to the connected user
     socket.emit('newUserConnect', {
         message: `Hi, Welcome to the community of ${users} users`

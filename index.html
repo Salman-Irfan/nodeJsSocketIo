@@ -27,17 +27,23 @@
 
         // Method 2: Creating a custom event on the client side
         socket.emit('myCustomEventFromClientSide', 'A custom message from CLIENT side');
-
         // Catching the "newUserConnect" event on the client side
         socket.on('newUserConnect', function(data) {
             document.write(`<h2>${data.message}</h2>`);
         });
 
+        // ##### V5 - custom namespace
         // Connecting to a custom namespace
         const customSocket = io('/custom-namespace');
         customSocket.on('namespaceEvent', function(data) {
             document.write(data);
         });
+
+        // v6 - rooms start
+        socket.on('connectedRoom', function(data) {
+            document.write(data);
+        });
+        // vr - rooms end
     </script>
 </body>
 </html>
