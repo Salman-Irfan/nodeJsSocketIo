@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"
-            integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"></script>
-        <title>Socket IO</title>
-    </head>
-    <body>
-        <p>Hello World</p>
-        <script>
-            const socket = io()
-            // catch send / (message) event from server
-            socket.on('message', function(data){
-                document.write(data)
-            })
-            // catching custom server side event on client  side
-            socket.on('myCustomEvent', function(data){
-                document.write(`<h1>${data.description}</h1>`)
-            });
-            // method 2, creating custom event on client side
-            socket.emit('myCustomEventFromClientSide', 'A custom message from CLIENT side');
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"
+        integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+    <title>Socket IO</title>
+</head>
+<body>
+    <p>Hello World</p>
+    <script>
+        const socket = io();
 
-            // v4 - broadcasting total number of users
-            // catching custom server side event on client  side
-            // socket.on('broadcast', function(data){
-            //     document.write(`<h2>${data.message}</h2>`)
-            // });
+        // Catch the "message" event from the server
+        socket.on('message', function(data) {
+            document.write(data);
+        });
 
-            // catching newUserConnect event on client side
-            socket.on('newUserConnect', function(data){
-                document.write(`<h2>${data.message}</h2>`)
-            });
-        </script>
-    </body>
+        // Catching custom server-side event on the client side
+        socket.on('myCustomEvent', function(data) {
+            document.write(`<h1>${data.description}</h1>`);
+        });
+
+        // Method 2: Creating a custom event on the client side
+        socket.emit('myCustomEventFromClientSide', 'A custom message from CLIENT side');
+
+        // Catching the "newUserConnect" event on the client side
+        socket.on('newUserConnect', function(data) {
+            document.write(`<h2>${data.message}</h2>`);
+        });
+
+        // Connecting to a custom namespace
+        const customSocket = io('/custom-namespace');
+        customSocket.on('namespaceEvent', function(data) {
+            document.write(data);
+        });
+    </script>
+</body>
 </html>
