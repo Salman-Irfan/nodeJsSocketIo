@@ -24,6 +24,12 @@
             });
             // method 2, creating custom event on client side
             socket.emit('myCustomEventFromClientSide', 'A custom message from CLIENT side');
+
+            // v4 - broadcasting total number of users
+            // catching custom server side event on client  side
+            socket.on('broadcast', function(data){
+                document.write(`<h2>${data.message}</h2>`)
+            });
         </script>
     </body>
 </html>

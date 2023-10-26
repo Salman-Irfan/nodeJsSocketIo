@@ -13,8 +13,18 @@ app.get('/', function (req, res) {
     res.sendFile(fileName, options);
 })
 
+// count of total users
+let users = 0
+
+// #### connection established ######
 io.on('connection', function (socket) {
     console.log(`A user connected`)
+    // incrementing the user count
+    users++;
+    // broadcasting the message including total users
+    io.sockets.emit('broadcast', {
+        message: `${users} users connected`
+    })
     // message event
     setTimeout(function () {
         socket.send(`Sent message from server side by prereserved events`)
@@ -29,8 +39,18 @@ io.on('connection', function (socket) {
     socket.on('myCustomEventFromClientSide', function(data){
         console.log(data);
     });
+
+
+
+    // ##### disconnect #####
     socket.on('disconnect', function () {
         console.log(`A user disconnected`)
+        // deccrementing the user count
+        users--;
+        // broadcasting the message including total users
+        io.sockets.emit('broadcast', {
+            message: `${users} users connected`
+        })
     });
 });
 
