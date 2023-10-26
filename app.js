@@ -22,9 +22,21 @@ io.on('connection', function (socket) {
     // incrementing the user count
     users++;
     // broadcasting the message including total users
-    io.sockets.emit('broadcast', {
-        message: `${users} users connected`
+    // io.sockets.emit('broadcast', {
+    //     message: `${users} users connected`
+    // })
+
+    // show welcome message to connected user
+    socket.emit('newUserConnect', {
+        message: `Hi, Welcome to the community of ${users} users`
     })
+
+    // and broadcast the message to those users who were already connected
+    socket.broadcast.emit('newUserConnect', {
+        message: `${users} connected`
+    })
+
+
     // message event
     setTimeout(function () {
         socket.send(`Sent message from server side by prereserved events`)
@@ -48,9 +60,15 @@ io.on('connection', function (socket) {
         // deccrementing the user count
         users--;
         // broadcasting the message including total users
-        io.sockets.emit('broadcast', {
-            message: `${users} users connected`
+        // io.sockets.emit('broadcast', {
+        //     message: `${users} users connected`
+        // })
+
+        // and broadcast the message to those users who were already connected
+        socket.broadcast.emit('newUserConnect', {
+            message: `${users} connected`
         })
+
     });
 });
 

@@ -27,7 +27,12 @@
 
             // v4 - broadcasting total number of users
             // catching custom server side event on client  side
-            socket.on('broadcast', function(data){
+            // socket.on('broadcast', function(data){
+            //     document.write(`<h2>${data.message}</h2>`)
+            // });
+
+            // catching newUserConnect event on client side
+            socket.on('newUserConnect', function(data){
                 document.write(`<h2>${data.message}</h2>`)
             });
         </script>
